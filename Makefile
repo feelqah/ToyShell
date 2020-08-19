@@ -1,5 +1,5 @@
 OBJ = main.o
-CFLAG = -Wall -g
+CFLAGS = -Wall -g
 CC = gcc
 
 main:$(OBJ)
