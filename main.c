@@ -36,7 +36,7 @@ int ts_cd(char **args){
 		fprintf(stderr, "ts: expected argument to \"cd\"\n");
 	}
 	else{
-		if(chdir(args[1] != 0)){
+		if(chdir(args[1]) != 0){
 			perror("ts");
 		}
 	}
