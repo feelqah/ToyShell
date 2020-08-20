@@ -89,7 +89,20 @@ int ts_launch(char **args){
 }
 
 int ts_execute(char **args){
-	//TODO
+	int i;
+
+	if(args[0] == NULL){
+		// empty command
+		return 1;
+	}
+
+	for(i=0;i<ts_num_builtins();i++){
+		if(strcmp(args[0], builtin_str[i]) == 0){
+			return (*builtin_func[i])(args);
+		}
+	}
+
+	return ts_launch(args);
 }
 
 char **ts_split_line(char *line){
