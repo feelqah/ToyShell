@@ -8,6 +8,59 @@
 #define TS_TOK_BUFSIZE 64
 #define TS_TOK_DELIM " \t\r\n\a"
 
+/* Function declarations for builtin shell commands */
+int ts_cd(char **args);
+int ts_help(char **args);
+int ts_exit(char **args);
+
+/* List of builtin commands, and their functions */
+char *builtin_str[] = {
+	"cd",
+	"help",
+	"exit"
+};
+
+int (*builtin_func[]) (char **) = {
+	&ts_cd,
+	&ts_help,
+	&ts_exit
+};
+
+int ts_num_builtins(){
+	return sizeof(builtin_str) / sizeof(char *);
+}
+
+/* Builtin function implementations  */
+int ts_cd(char **args){
+	if(args[1] == NULL){
+		fprintf(stderr, "ts: expected argument to \"cd\"\n");
+	}
+	else{
+		if(chdir(args[1] != 0)){
+			perror("ts");
+		}
+	}
+	return 1;
+}
+
+int ts_help(char **args){
+	int i;
+	printf("Toy Shell\n");
+	printf("Enter program names and arguments and hit enter\n");
+	printf("Following commands are builtin:\n");
+
+	for(i=0;i<ts_num_builtins();i++){
+		printf(" %s\n", builtin_str[i]);
+	}
+
+	printf("Use the man command for information on other programs\n");
+	return 1;
+}
+
+int ts_exit(char **args){
+	return 0;
+}
+
 int ts_launch(char **args){
 	pid_t pid, wpid;
 	int status;
